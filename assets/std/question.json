@@ -1,0 +1,139 @@
+{
+  "gseb": {
+    "std-10": {
+      "Science": {
+        "Chapter-1": {
+          "name": "Cell Division",
+          "mcq": [
+            {
+              "question": "By which process the stability of the number of chromosomes is maintained in the generation produced by sexual reproduction?",
+              "A": "Meiosis",
+              "B": "Equational division",
+              "C": "Amitosis",
+              "D": "None of the above",
+              "qus-image": "",
+              "op-image": false
+            },
+            {
+              "question": "In which stage of mitosis does the nuclear membrane reappear?",
+              "A": "Prophase",
+              "B": "Metaphase",
+              "C": "Telophase",
+              "D": "Anaphase",
+              "qus-image": "",
+              "op-image": false
+            },
+            {
+              "question": "How many daughter cells are formed after meiosis?",
+              "A": "2",
+              "B": "4",
+              "C": "8",
+              "D": "1",
+              "qus-image": "",
+              "op-image": false
+            }
+          ],
+          "1-mark": [
+            {
+              "question": "Give Difference : Prophase & Telophase",
+              "qus-image": "",
+              "op-image": false
+            },
+            {
+              "question": "Which type of cell division is called equational division?",
+              "qus-image": "",
+              "op-image": false
+            },
+            {
+              "question": "Name the cell division that occurs in germ cells.",
+              "qus-image": "",
+              "op-image": false
+            }
+          ],
+          "2-mark": [
+            {
+              "question": "State two differences between mitosis and meiosis.",
+              "qus-image": "",
+              "op-image": false
+            },
+            {
+              "question": "Why is meiosis important for sexual reproduction?",
+              "qus-image": "",
+              "op-image": false
+            }
+          ],
+          "3-mark": [
+            {
+              "question": "Explain the significance of mitosis in growth and repair of organisms.",
+              "qus-image": "",
+              "op-image": false
+            }
+          ],
+          "4-mark": [
+            {
+              "question": "Describe the different stages of mitosis with a neat labeled diagram.",
+              "qus-image": "",
+              "op-image": true
+            }
+          ]
+        },
+        "Chapter-2": {
+          "name": "Tissues",
+          "mcq": [
+            {
+              "question": "Which tissue is responsible for movement in our body?",
+              "A": "Muscular tissue",
+              "B": "Nervous tissue",
+              "C": "Epithelial tissue",
+              "D": "Connective tissue",
+              "qus-image": "",
+              "op-image": false
+            },
+            {
+              "question": "Xylem is responsible for transport of:",
+              "A": "Food",
+              "B": "Water",
+              "C": "Hormones",
+              "D": "Oxygen",
+              "qus-image": "",
+              "op-image": false
+            }
+          ],
+          "1-mark": [
+            {
+              "question": "Name the permanent tissue responsible for transporting food in plants.",
+              "qus-image": "",
+              "op-image": false
+            },
+            {
+              "question": "What is the structural and functional unit of nervous tissue?",
+              "qus-image": "",
+              "op-image": false
+            }
+          ],
+          "2-mark": [
+            {
+              "question": "Give two differences between xylem and phloem.",
+              "qus-image": "",
+              "op-image": false
+            }
+          ],
+          "3-mark": [
+            {
+              "question": "Explain the role of connective tissue in animals with examples.",
+              "qus-image": "",
+              "op-image": false
+            }
+          ],
+          "4-mark": [
+            {
+              "question": "Describe different types of simple epithelial tissues with their functions.",
+              "qus-image": "",
+              "op-image": false
+            }
+          ]
+        }
+      }
+    }
+  }
+}

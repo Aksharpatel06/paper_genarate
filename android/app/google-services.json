@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "128853313339",
+    "project_id": "paper-generator-54ef6",
+    "storage_bucket": "paper-generator-54ef6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:128853313339:android:d94f1d07a1502cfff8191e",
+        "android_client_info": {
+          "package_name": "com.example.paper_genarate_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "128853313339-5ecqum3jhur8vp3v0tnv81luor3dmtcj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.paper_genarate_app",
+            "certificate_hash": "c253522fbf84cfa30c5f4c838426ae37e1c83b0e"
+          }
+        },
+        {
+          "client_id": "128853313339-ej8ku4l6d1foh16hp43d9jn212b6qiaj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVKsimJnKlFJNdtYIbqnVlLcvQi_nzcQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "128853313339-ej8ku4l6d1foh16hp43d9jn212b6qiaj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "128853313339-5ke7jvn2nf98adtvmovthopj9dtjj2ct.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.paperGenarateApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
