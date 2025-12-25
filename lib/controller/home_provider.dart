@@ -3,65 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:razorpay_flutter/razorpay_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:paper_genarate_app/model/question_model.dart';
 
 class HomeProvider extends ChangeNotifier {
-  late Razorpay _razorpay;
-  bool isPremium = false;
-
-  HomeProvider() {
-    _razorpay = Razorpay();
-    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
-    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
-    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
-    _checkPremiumStatus();
-  }
-
-  Future<void> _checkPremiumStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-    isPremium = prefs.getBool('isPremium') ?? false;
-    notifyListeners();
-  }
-
-  void startPayment() {
-    var options = {
-      'key': 'rzp_test_placeholder', // REPLACE WITH YOUR KEY
-      'amount': 100, // 100 paise = 1 INR
-      'name': 'Paper Generator',
-      'description': 'Premium Chapter Access',
-      'prefill': {'contact': '8888888888', 'email': 'test@razorpay.com'},
-    };
-
-    try {
-      _razorpay.open(options);
-    } catch (e) {
-      debugPrint('Error: $e');
-    }
-  }
-
-  void _handlePaymentSuccess(PaymentSuccessResponse response) async {
-    debugPrint("Payment Success: ${response.paymentId}");
-    isPremium = true;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isPremium', true);
-    notifyListeners();
-  }
-
-  void _handlePaymentError(PaymentFailureResponse response) {
-    debugPrint("Payment Error: ${response.code} - ${response.message}");
-  }
-
-  void _handleExternalWallet(ExternalWalletResponse response) {
-    debugPrint("External Wallet: ${response.walletName}");
-  }
-
-  @override
-  void dispose() {
-    _razorpay.clear();
-    super.dispose();
-  }
-
   List<String> categories = ['Teachers', 'Students', 'Others'];
   String category = 'Teachers';
   void setCategory(String value) {
@@ -83,13 +27,6 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // List<String> streams = ['Secondary', 'Science', 'Commerce', 'Arts'];
-  // String stream = 'Secondary';
-  // void setStream(String value) {
-  //   stream = value;
-  //   notifyListeners();
-  // }
-
   List<String> standards = ['9', '10', '11-com', '11-sci', '12-com', '12-sci'];
   String standard = '10';
   void setStandard(String value) {
@@ -99,7 +36,7 @@ class HomeProvider extends ChangeNotifier {
 
   Map dataMap = {};
 
-  Future<void> loadJosnData() async {
+  Future<void> loadJsonData() async {
     try {
       final String response = await rootBundle.loadString('assets/std/db.json');
       Map data = jsonDecode(response);
@@ -110,8 +47,8 @@ class HomeProvider extends ChangeNotifier {
       }
       notifyListeners();
     } catch (e, straceTrace) {
-      print('Error loading JSON data: $e');
-      print('Stack trace: $straceTrace');
+      debugPrint('Error loading JSON data: $e');
+      debugPrint('Stack trace: $straceTrace');
     }
   }
 
@@ -156,20 +93,13 @@ class HomeProvider extends ChangeNotifier {
 
   void getQuestions(String questionType) {
     selectedQuestionType = questionType;
-    // questionList = [];
-    // if (dataMap.isNotEmpty) {
-    //   questionList = dataMap[medium]['std-$standard'][selectedSubject][selectedChapter][questionType];
-    // }
     notifyListeners();
   }
 
-  Map<String, String> _selectedAnswers = {};
-  List<Map<String, dynamic>> _questionList = [];
-  List<Map<String, dynamic>> get questionList => _questionList;
-  Set<Map<String, dynamic>> _selectedQuestions = {};
-  Set<Map<String, dynamic>> get selectedQuestions => _selectedQuestions;
-
-  Map<String, String> get selectedAnswers => _selectedAnswers;
+  final List<QuestionModel> _questionList = [];
+  List<QuestionModel> get questionList => _questionList;
+  final Set<QuestionModel> _selectedQuestions = {};
+  Set<QuestionModel> get selectedQuestions => _selectedQuestions;
 
   // Getters
 
@@ -200,23 +130,14 @@ class HomeProvider extends ChangeNotifier {
       if (questions != null) {
         for (int i = 0; i < questions.length; i++) {
           var q = Map<String, dynamic>.from(questions[i]);
-          _questionList.add({
-            'id': '${selectedQuestionType}_${i + 1}',
-            'question': q['question'],
-            'options': (selectedQuestionType == 'mcq')
-                ? ['A', 'B', 'C', 'D'].where((opt) => q.containsKey(opt)).map((opt) => {"id": opt, "text": q[opt]}).toList()
-                : [],
-            'subject': selectedChapter,
-            'type': selectedQuestionType,
-            'marks': _getMarks(selectedQuestionType),
-            'qus-image': q['qus-image'] ?? '',
-            'op-image': q['op-image'] ?? false,
-          });
+          _questionList.add(
+            QuestionModel.fromMap(q, '${selectedQuestionType}_${i + 1}', _getMarks(selectedQuestionType), selectedQuestionType, selectedChapter),
+          );
         }
       }
       chapterTotalQuestionCount();
     } catch (e, stackTrace) {
-      print("Error loading questions: $e $stackTrace");
+      debugPrint("Error loading questions: $e $stackTrace");
     } finally {
       notifyListeners();
     }
@@ -237,7 +158,7 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
-  void toggleQuestionSelection(Map<String, dynamic> questionId) {
+  void toggleQuestionSelection(QuestionModel questionId) {
     if (_selectedQuestions.contains(questionId)) {
       _selectedQuestions.remove(questionId);
     } else {
@@ -274,8 +195,8 @@ class HomeProvider extends ChangeNotifier {
     return {'total': totalQuestions, 'selected': selectedCount, 'unselected': unselectedCount};
   }
 
-  List<Map<String, dynamic>> getSelectedQuestionsList() {
-    return _questionList.where((question) => _selectedQuestions.contains(question['id'])).toList();
+  List<QuestionModel> getSelectedQuestionsList() {
+    return _questionList.where((question) => _selectedQuestions.contains(question)).toList();
   }
 
   DateTime? _selectedDate;

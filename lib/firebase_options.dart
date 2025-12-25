@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDVKsimJnKlFJNdtYIbqnVlLcvQi_nzcQo',
-    appId: '1:128853313339:android:d94f1d07a1502cfff8191e',
+    appId: '1:128853313339:android:c26f44af45e962faf8191e',
     messagingSenderId: '128853313339',
     projectId: 'paper-generator-54ef6',
     storageBucket: 'paper-generator-54ef6.firebasestorage.app',
@@ -64,6 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '128853313339',
     projectId: 'paper-generator-54ef6',
     storageBucket: 'paper-generator-54ef6.firebasestorage.app',
+    androidClientId: '128853313339-5ecqum3jhur8vp3v0tnv81luor3dmtcj.apps.googleusercontent.com',
+    iosClientId: '128853313339-5ke7jvn2nf98adtvmovthopj9dtjj2ct.apps.googleusercontent.com',
     iosBundleId: 'com.example.paperGenarateApp',
   );
 
@@ -73,6 +75,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '128853313339',
     projectId: 'paper-generator-54ef6',
     storageBucket: 'paper-generator-54ef6.firebasestorage.app',
+    androidClientId: '128853313339-5ecqum3jhur8vp3v0tnv81luor3dmtcj.apps.googleusercontent.com',
+    iosClientId: '128853313339-5ke7jvn2nf98adtvmovthopj9dtjj2ct.apps.googleusercontent.com',
     iosBundleId: 'com.example.paperGenarateApp',
   );
 
@@ -85,4 +89,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'paper-generator-54ef6.firebasestorage.app',
     measurementId: 'G-P9M191SZYQ',
   );
+
 }

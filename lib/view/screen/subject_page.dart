@@ -4,11 +4,32 @@ import 'package:paper_genarate_app/utils/color.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/custom_appbar.dart';
+import '../../utils/interstitial_ad_util.dart';
 import 'chapter_page.dart';
+import '../../utils/banner_ad_widget.dart';
 
-class SubjectsPage extends StatelessWidget {
+class SubjectsPage extends StatefulWidget {
   final String title;
   const SubjectsPage({super.key, required this.title});
+
+  @override
+  State<SubjectsPage> createState() => _SubjectsPageState();
+}
+
+class _SubjectsPageState extends State<SubjectsPage> {
+  final InterstitialAdUtil _adUtil = InterstitialAdUtil();
+
+  @override
+  void initState() {
+    super.initState();
+    _adUtil.loadAd();
+  }
+
+  @override
+  void dispose() {
+    _adUtil.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +38,7 @@ class SubjectsPage extends StatelessWidget {
       body: Column(
         spacing: 20,
         children: [
-          CustomAppbar(title: title, subtitle: 'Subjects'),
+          CustomAppbar(title: widget.title, subtitle: 'Subjects'),
 
           Expanded(
             child: Consumer<HomeProvider>(
@@ -30,10 +51,11 @@ class SubjectsPage extends StatelessWidget {
                       icon: Icons.title,
                       title: provider.subNames[index],
                       onTap: () {
-                        provider.selectAllQuestions();
-                        provider.getChapterData(provider.subNames[index]);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ChapterPage(title: provider.subNames[index])));
-                        // Navigate to subject details page
+                        _adUtil.showAd(() {
+                          provider.selectAllQuestions();
+                          provider.getChapterData(provider.subNames[index]);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ChapterPage(title: provider.subNames[index])));
+                        });
                       },
                     );
                   },
@@ -41,6 +63,7 @@ class SubjectsPage extends StatelessWidget {
               },
             ),
           ),
+          const BannerAdWidget(),
         ],
       ),
     );

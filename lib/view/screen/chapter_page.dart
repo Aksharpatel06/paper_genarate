@@ -40,30 +40,10 @@ class ChaptersNames extends StatelessWidget {
                 title: provider.dataMap[provider.medium]['std-${provider.standard}'][provider.selectedSubject]['Chapter-${index + 1}']['name'],
                 // totalSelectedCount: '5',
                 onTap: () {
-                  if (index > 1 && !provider.isPremium) {
-                    showDialog(
-                      context: context,
-                      builder: (ctx) => AlertDialog(
-                        title: const Text("Premium Content"),
-                        content: const Text("Unlock all chapters for just ₹1!"),
-                        actions: [
-                          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text("Cancel")),
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(ctx);
-                              provider.startPayment();
-                            },
-                            child: const Text("Pay Now"),
-                          ),
-                        ],
-                      ),
-                    );
-                  } else {
-                    provider.getQuestionType("Chapter-${index + 1}");
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionTypePage(title: 'Chapter-${index + 1}')));
-                  }
+                  provider.getQuestionType("Chapter-${index + 1}");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionTypePage(title: 'Chapter-${index + 1}')));
                 },
-                isLocked: index > 1 && !provider.isPremium,
+                isLocked: false,
               ),
             );
           },

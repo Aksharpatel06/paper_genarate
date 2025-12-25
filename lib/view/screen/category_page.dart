@@ -23,11 +23,6 @@ class CategoryPage extends StatelessWidget {
             spacing: 15,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // IconButton(
-              //   padding: EdgeInsets.zero,
-              //   onPressed: () {},
-              //   icon: Icon(Icons.arrow_back, color: CustomColors.whiteColor, size: 30),
-              // ),
               Text(
                 "Category",
                 style: GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.bold, color: CustomColors.whiteColor),
@@ -53,21 +48,19 @@ class CategoryPage extends StatelessWidget {
 
               Consumer<HomeProvider>(
                 builder: (context, provider, child) {
-                  {
-                    return SizedBox(
-                      height: 50,
-                      width: double.infinity,
-                      child: CustomElevatedButton(
-                        text: 'Continue',
-                        onPressed: () async {
-                          await AppPref.instance.setCategory(provider.category);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage()));
-                        },
-                        backgroundColor: CustomColors.whiteColor,
-                        textColor: CustomColors.blueColor,
-                      ),
-                    );
-                  }
+                  return SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: CustomElevatedButton(
+                      text: 'Continue',
+                      onPressed: () async {
+                        await AppPref.instance.setCategory(provider.category);
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+                      },
+                      backgroundColor: CustomColors.whiteColor,
+                      textColor: CustomColors.blueColor,
+                    ),
+                  );
                 },
               ),
             ],

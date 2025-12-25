@@ -1,4 +1,4 @@
-package com.example.paper_genarate_app
+package com.synaptek.paper_genarate_app
 
 import io.flutter.embedding.android.FlutterActivity
 

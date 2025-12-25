@@ -39,7 +39,7 @@ class _GoogleAuthPageState extends State<GoogleAuthPage> with SingleTickerProvid
         context,
       ).showSnackBar(SnackBar(content: const Text('Google Sign-In successful!'), backgroundColor: CustomColors.blueColor));
 
-      Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryPage()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CategoryPage()));
       // Navigate to home page or next screen
       // Navigator.pushReplacementNamed(context, '/home');
     } else if (authProvider.error != null && mounted) {
@@ -155,60 +155,6 @@ class _GoogleAuthPageState extends State<GoogleAuthPage> with SingleTickerProvid
                                               ),
                                             ],
                                           ),
-                                  ),
-                                ),
-                              ),
-
-                              const SizedBox(height: 24),
-
-                              // Divider
-                              Row(
-                                children: [
-                                  Expanded(child: Container(height: 1, color: Colors.grey.shade300)),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                                    child: Text(
-                                      'OR',
-                                      style: TextStyle(color: Colors.grey.shade600, fontSize: 12, fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                  Expanded(child: Container(height: 1, color: Colors.grey.shade300)),
-                                ],
-                              ),
-
-                              const SizedBox(height: 24),
-
-                              // Email sign-in option
-                              Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  onTap: () {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: const Text('Email sign-in coming soon!'), backgroundColor: CustomColors.orangeColor),
-                                    );
-                                  },
-                                  borderRadius: BorderRadius.circular(16),
-                                  child: Container(
-                                    width: double.infinity,
-                                    padding: const EdgeInsets.symmetric(vertical: 16),
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(colors: [CustomColors.orangeColor, CustomColors.orangeColor.withOpacity(0.8)]),
-                                      borderRadius: BorderRadius.circular(16),
-                                      boxShadow: [
-                                        BoxShadow(color: CustomColors.orangeColor.withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 6)),
-                                      ],
-                                    ),
-                                    child: const Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.email_outlined, color: Colors.white, size: 22),
-                                        SizedBox(width: 12),
-                                        Text(
-                                          'Sign in with Email',
-                                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
                                   ),
                                 ),
                               ),

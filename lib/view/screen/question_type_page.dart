@@ -53,8 +53,8 @@ class QuestionTypeNames extends StatelessWidget {
   int selectedQuestCount(HomeProvider provider, String questionType) {
     int selectedCount = 0;
 
-    for (dynamic question in provider.selectedQuestions) {
-      if (question['type'] == questionType && question['subject'] == provider.selectedChapter) {
+    for (var question in provider.selectedQuestions) {
+      if (question.type == questionType && question.subject == provider.selectedChapter) {
         selectedCount++;
       }
     }

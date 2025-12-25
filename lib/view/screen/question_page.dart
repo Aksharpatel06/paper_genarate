@@ -78,9 +78,9 @@ class _QuestionsPageState extends State<QuestionsPage> {
                   itemCount: provider.questionList.length,
                   itemBuilder: (context, index) {
                     final question = provider.questionList[index];
-                    final questionId = question['question'];
-                    bool isSelected = provider.selectedQuestions.any((element) => element['question'].contains(questionId));
-                    final hasOptions = question['options'] != null && question['options'].isNotEmpty;
+                    final questionId = question.question;
+                    bool isSelected = provider.selectedQuestions.any((element) => element.question.contains(questionId));
+                    final hasOptions = question.options.isNotEmpty;
                     return InkWell(
                       onTap: () => provider.toggleQuestionSelection(provider.questionList[index]),
                       child: Container(
@@ -120,13 +120,13 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                             Container(
                                               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                               decoration: BoxDecoration(
-                                                color: _getTypeColor(question['type']).withOpacity(0.1),
+                                                color: _getTypeColor(question.type).withOpacity(0.1),
                                                 borderRadius: BorderRadius.circular(6),
-                                                border: Border.all(color: _getTypeColor(question['type']).withOpacity(0.3)),
+                                                border: Border.all(color: _getTypeColor(question.type).withOpacity(0.3)),
                                               ),
                                               child: Text(
-                                                question['type'] ?? 'Question',
-                                                style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: _getTypeColor(question['type'])),
+                                                question.type,
+                                                style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: _getTypeColor(question.type)),
                                               ),
                                             ),
                                             Spacer(),
@@ -134,7 +134,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                               decoration: BoxDecoration(color: Colors.blue.withOpacity(0.1), borderRadius: BorderRadius.circular(6)),
                                               child: Text(
-                                                '${question['marks'] ?? 1} Mark${(question['marks'] ?? 1) > 1 ? 's' : ''}',
+                                                '${question.marks} Mark${question.marks > 1 ? 's' : ''}',
                                                 style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: Colors.blue[700]),
                                               ),
                                             ),
@@ -154,7 +154,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                             SizedBox(width: 8),
                                             Expanded(
                                               child: Text(
-                                                question['question'] ?? 'No question text',
+                                                question.question,
                                                 style: TextStyle(fontSize: 15, color: Colors.grey[800], height: 1.5, fontWeight: FontWeight.w500),
                                               ),
                                             ),
@@ -165,7 +165,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                         if (hasOptions) ...[
                                           SizedBox(height: 12),
                                           Column(
-                                            children: question['options'].take(2).map<Widget>((option) {
+                                            children: question.options.take(2).map<Widget>((option) {
                                               return Padding(
                                                 padding: EdgeInsets.only(bottom: 4),
                                                 child: Row(
@@ -173,7 +173,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                                     SizedBox(width: 24),
                                                     Expanded(
                                                       child: Text(
-                                                        '${option['id']}) ${option['text']}',
+                                                        '${option.id}) ${option.text}',
                                                         style: TextStyle(fontSize: 13, color: Colors.grey[600]),
                                                       ),
                                                     ),
@@ -182,11 +182,11 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                               );
                                             }).toList(),
                                           ),
-                                          if (question['options'].length > 2) ...[
+                                          if (question.options.length > 2) ...[
                                             Padding(
                                               padding: EdgeInsets.only(left: 24),
                                               child: Text(
-                                                '... and ${question['options'].length - 2} more options',
+                                                '... and ${question.options.length - 2} more options',
                                                 style: TextStyle(fontSize: 12, color: Colors.grey[500], fontStyle: FontStyle.italic),
                                               ),
                                             ),

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
+import 'package:paper_genarate_app/model/question_model.dart';
 
 class QuestionPaperPDF {
   static Future<File> generatePDF({
@@ -11,7 +12,7 @@ class QuestionPaperPDF {
     required String standard,
     required String marks,
     required String examTime,
-    required List<Map<String, dynamic>> questions,
+    required List<QuestionModel> questions,
     required String date,
     required String instituteName,
     required String testName,
@@ -35,7 +36,7 @@ class QuestionPaperPDF {
             ignoreMargins: true,
             child: pw.Center(
               child: pw.Opacity(
-                opacity: 0.5,
+                opacity: 0.3,
                 child: pw.Image(
                   pw.MemoryImage(logoBytes),
                   width: 300, // Adjust size as needed
@@ -74,7 +75,7 @@ class QuestionPaperPDF {
           final List<String> sectionLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
 
           for (final type in questionTypes) {
-            final sectionQuestions = questions.where((q) => q['type'] == type).toList();
+            final sectionQuestions = questions.where((q) => q.type == type).toList();
             if (sectionQuestions.isNotEmpty) {
               final sectionLetter = sectionLetters[sectionIndex % sectionLetters.length];
 
@@ -201,7 +202,7 @@ class QuestionPaperPDF {
   }
 
   static pw.Widget _buildSection(
-    List<Map<String, dynamic>> questions,
+    List<QuestionModel> questions,
     String sectionLetter,
     int startNumber,
     pw.Font regularFont,
@@ -230,7 +231,7 @@ class QuestionPaperPDF {
             // Assuming marks are stored in the question map or we parse it from type?
             // The previous code passed marks explicitly.
             // We can extract marks from 'marks' key in question map if available, or parse 'type'
-            int marks = question['marks'] ?? 1; // Default to 1 if not found
+            int marks = question.marks; // Default to 1 if not found
             return _buildShortQuestion(question, questionNum, marks, regularFont, gujaratiFont);
           }
         }).toList(),
@@ -238,7 +239,7 @@ class QuestionPaperPDF {
     );
   }
 
-  static pw.Widget _buildMCQQuestion(Map<String, dynamic> question, int number, pw.Font regularFont, pw.Font gujaratiFont) {
+  static pw.Widget _buildMCQQuestion(QuestionModel question, int number, pw.Font regularFont, pw.Font gujaratiFont) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
@@ -250,11 +251,11 @@ class QuestionPaperPDF {
           ],
         ),
         pw.SizedBox(height: 5),
-        if (question['options'] != null)
-          ...question['options'].map<pw.Widget>((option) {
+        if (question.options.isNotEmpty)
+          ...question.options.map<pw.Widget>((option) {
             return pw.Padding(
               padding: pw.EdgeInsets.only(left: 15, bottom: 2),
-              child: pw.Text('${option['id']}. ${_getOptionText(option)}', style: _getTextStyle(regularFont, gujaratiFont, fontSize: 10)),
+              child: pw.Text('${option.id}. ${_getOptionText(option)}', style: _getTextStyle(regularFont, gujaratiFont, fontSize: 10)),
             );
           }).toList(),
         pw.SizedBox(height: 8),
@@ -262,7 +263,7 @@ class QuestionPaperPDF {
     );
   }
 
-  static pw.Widget _buildShortQuestion(Map<String, dynamic> question, int number, int marks, pw.Font regularFont, pw.Font gujaratiFont) {
+  static pw.Widget _buildShortQuestion(QuestionModel question, int number, int marks, pw.Font regularFont, pw.Font gujaratiFont) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
@@ -287,11 +288,11 @@ class QuestionPaperPDF {
     );
   }
 
-  static String _getQuestionText(Map<String, dynamic> question) {
-    return question['question'] ?? '';
+  static String _getQuestionText(QuestionModel question) {
+    return question.question;
   }
 
-  static String _getOptionText(Map<String, dynamic> option) {
-    return option['text'] ?? '';
+  static String _getOptionText(OptionModel option) {
+    return option.text;
   }
 }

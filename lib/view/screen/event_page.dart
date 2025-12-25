@@ -5,16 +5,38 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:paper_genarate_app/controller/home_provider.dart';
+import 'package:paper_genarate_app/model/question_model.dart';
 import 'package:paper_genarate_app/view/screen/pdf_view.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/custom_appbar.dart';
+import '../../utils/interstitial_ad_util.dart';
+import '../../utils/banner_ad_widget.dart';
 
-class EventPage extends StatelessWidget {
+class EventPage extends StatefulWidget {
   final String totalQuestions;
   const EventPage({super.key, required this.totalQuestions});
+
+  @override
+  State<EventPage> createState() => _EventPageState();
+}
+
+class _EventPageState extends State<EventPage> {
+  final InterstitialAdUtil _adUtil = InterstitialAdUtil();
+
+  @override
+  void initState() {
+    super.initState();
+    _adUtil.loadAd();
+  }
+
+  @override
+  void dispose() {
+    _adUtil.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,34 +45,37 @@ class EventPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            CustomAppbar(title: 'Export PDF', subtitle: 'Sub Total: $totalQuestions Questions'),
+            CustomAppbar(title: 'Export PDF', subtitle: 'Sub Total: ${widget.totalQuestions} Questions'),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  DateSection(),
-                  SizedBox(height: 16),
-                  TimeSection(),
-                  SizedBox(height: 16),
-                  InstituteNameField(),
-                  SizedBox(height: 16),
-                  TestNameField(),
-                  SizedBox(height: 16),
-                  PageEndingTextField(),
-                  SizedBox(height: 16),
-                  WatermarkSection(),
-                  SizedBox(height: 24),
-                  SubmitButton(),
+                children: [
+                  const DateSection(),
+                  const SizedBox(height: 16),
+                  const TimeSection(),
+                  const SizedBox(height: 16),
+                  const InstituteNameField(),
+                  const SizedBox(height: 16),
+                  const TestNameField(),
+                  const SizedBox(height: 16),
+                  const PageEndingTextField(),
+                  const SizedBox(height: 16),
+                  const WatermarkSection(),
+                  const SizedBox(height: 24),
+                  SubmitButton(adUtil: _adUtil),
                 ],
               ),
             ),
           ],
         ),
       ),
+      bottomNavigationBar: const BannerAdWidget(),
     );
   }
 }
+
+// ... (Rest of the widgets remain same until SubmitButton)
 
 // Date Section
 class DateSection extends StatelessWidget {
@@ -358,7 +383,8 @@ class WatermarkSection extends StatelessWidget {
 
 // Submit Button
 class SubmitButton extends StatelessWidget {
-  const SubmitButton({Key? key}) : super(key: key);
+  final InterstitialAdUtil adUtil;
+  const SubmitButton({Key? key, required this.adUtil}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -368,33 +394,35 @@ class SubmitButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () async {
-          // Access all form data
-          int totalMarks = 0;
-          for (Map<String, dynamic> q in provider.selectedQuestions) {
-            totalMarks += q['marks'] as int;
-          }
-          log('error: ${provider.selectedQuestions}');
-          final file = await QuestionPaperPDF.generatePDF(
-            subject: provider.selectedSubject,
-            standard: provider.standard,
-            marks: totalMarks.toString(),
-            examTime: '2 H',
-            questions: provider.selectedQuestions.toList(),
-            date: provider.selectedDate != null
-                ? DateFormat('dd/MM/yyyy').format(provider.selectedDate!)
-                : DateFormat('dd/MM/yyyy').format(DateTime.now()),
-            instituteName: provider.instituteName,
-            testName: provider.testName,
-            pageEndingText: provider.pageEndingText,
-            watermarkImage: provider.watermarkImage,
-          );
+          adUtil.showAd(() async {
+            // Access all form data
+            int totalMarks = 0;
+            for (QuestionModel q in provider.selectedQuestions) {
+              totalMarks += q.marks;
+            }
+            log('error: ${provider.selectedQuestions}');
+            final file = await QuestionPaperPDF.generatePDF(
+              subject: provider.selectedSubject,
+              standard: provider.standard,
+              marks: totalMarks.toString(),
+              examTime: '2 H',
+              questions: provider.selectedQuestions.toList(),
+              date: provider.selectedDate != null
+                  ? DateFormat('dd/MM/yyyy').format(provider.selectedDate!)
+                  : DateFormat('dd/MM/yyyy').format(DateTime.now()),
+              instituteName: provider.instituteName,
+              testName: provider.testName,
+              pageEndingText: provider.pageEndingText,
+              watermarkImage: provider.watermarkImage,
+            );
 
-          // Open PDF preview
-          await Printing.layoutPdf(
-            onLayout: (PdfPageFormat format) async {
-              return await file.readAsBytes();
-            },
-          );
+            // Open PDF preview
+            await Printing.layoutPdf(
+              onLayout: (PdfPageFormat format) async {
+                return await file.readAsBytes();
+              },
+            );
+          });
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.blue,
